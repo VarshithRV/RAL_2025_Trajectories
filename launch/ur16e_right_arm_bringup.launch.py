@@ -21,22 +21,22 @@ def generate_launch_description():
         launch_arguments={
             'launch_rviz': 'false',
             'ur_type': 'ur16e',
-            'robot_ip':'localhost',
-            'use_fake_hardware': 'true'
+            'robot_ip':'192.168.1.7',
+            'use_fake_hardware': 'false'
         }.items()
     )
 
-    ur_moveit_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(ur_moveit_pkg, 'launch', 'ur_moveit.launch.py')
-        ),
-        launch_arguments={
-            'ur_type': 'ur16e',
-            'launch_rviz': 'true'
-        }.items()
-    )
+    # ur_moveit_launch = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource(
+    #         os.path.join(ur_moveit_pkg, 'launch', 'ur_moveit.launch.py')
+    #     ),
+    #     launch_arguments={
+    #         'ur_type': 'ur16e',
+    #         'launch_rviz': 'true'
+    #     }.items()
+    # )
 
     return LaunchDescription([
         ur_control_launch,
-        ur_moveit_launch
+        # ur_moveit_launch
     ])
