@@ -9,12 +9,22 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(ur_robot_driver REQUIRED)
 find_package(ur_moveit_config REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(moveit_ros_planning_interface REQUIRED)
+
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 
 install(DIRECTORY launch
   DESTINATION share/${PROJECT_NAME}
+)
+
+add_executable(moveit2_example src/moveit2_examples.cpp)
+ament_target_dependencies(moveit2_example rclcpp geometry_msgs moveit_ros_planning_interface)
+install(TARGETS
+moveit2_example
+DESTINATION lib/${PROJECT_NAME}
 )
 
 if(BUILD_TESTING)
