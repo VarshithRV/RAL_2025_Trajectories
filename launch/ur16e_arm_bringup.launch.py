@@ -21,8 +21,8 @@ def generate_launch_description():
         launch_arguments={
             'launch_rviz': 'false',
             'ur_type': 'ur16e',
-            'robot_ip':'192.168.1.4',
-            'use_fake_hardware': 'false'
+            'robot_ip': 'localhost',
+            'use_fake_hardware': 'true'
         }.items()
     )
 
