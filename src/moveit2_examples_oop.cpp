@@ -23,12 +23,38 @@
 using namespace std::chrono_literals;
 using moveit::planning_interface::MoveGroupInterface;
 
+class MoveitExamples{
+    public: 
+        MoveitExamples(rclcpp::Node::SharedPtr &node){
+            node_ = node;
+            move_group_interface_ = std::make_shared<moveit::planning_interface::MoveGroupInterface>(node, "ur_manipulator");
+        }
+
+        void move_to_pose(const geometry_msgs::msg::Pose &pose){
+            move_group_interface_->setPoseTarget(pose);
+            auto const [success, plan] = [this]{
+                moveit::planning_interface::MoveGroupInterface::Plan msg;
+                auto const ok=static_cast<bool>(this->move_group_interface_->plan(msg));
+                return std::make_pair(ok,msg);
+            }();
+            if(success)
+                move_group_interface_->execute(plan);
+            else
+                RCLCPP_ERROR(node_->get_logger(),"Planning Failed");
+        }
+
+    private:
+        std::shared_ptr<moveit::planning_interface::MoveGroupInterface> move_group_interface_;
+        rclcpp::Node::SharedPtr node_;
+};
 
 int main(int argc, char* argv[]){
+
     rclcpp::init(argc,argv);
     auto node = std::make_shared<rclcpp::Node>("moveit_example");
+    auto moveit_example = std::make_shared<MoveitExamples>(node);
     RCLCPP_INFO(node->get_logger(),"Started the tutorials node");
-    auto move_group_interface = MoveGroupInterface(node,"ur_manipulator");
+
     auto const target_pose = []{
         geometry_msgs::msg::Pose pose;
         pose.orientation.x=0;
@@ -41,18 +67,8 @@ int main(int argc, char* argv[]){
         return pose;
     }();
 
-    move_group_interface.setPoseTarget(target_pose);
-    auto const [success, plan] = [&move_group_interface]{
-        moveit::planning_interface::MoveGroupInterface::Plan msg;
-        auto const ok = static_cast<bool>(move_group_interface.plan(msg));
-        return std::make_pair(ok,msg);
-    }();
+    moveit_example->move_to_pose(target_pose);
 
-    if(success)
-        move_group_interface.execute(plan);
-    else
-        RCLCPP_ERROR(node->get_logger(),"Planning Failed");
-    
     rclcpp::spin(node);
     rclcpp::shutdown();
 }

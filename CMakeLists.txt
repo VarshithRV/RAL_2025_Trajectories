@@ -11,6 +11,7 @@ find_package(ur_robot_driver REQUIRED)
 find_package(ur_moveit_config REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
+find_package(moveit_core REQUIRED)
 
 # uncomment the following section in order to fill in
 # further dependencies manually.
@@ -20,10 +21,24 @@ install(DIRECTORY launch
   DESTINATION share/${PROJECT_NAME}
 )
 
-add_executable(moveit2_example src/moveit2_examples.cpp)
-ament_target_dependencies(moveit2_example rclcpp geometry_msgs moveit_ros_planning_interface)
+add_executable(moveit2_examples src/moveit2_examples.cpp)
+ament_target_dependencies(moveit2_examples rclcpp geometry_msgs moveit_ros_planning_interface)
 install(TARGETS
-moveit2_example
+moveit2_examples
+DESTINATION lib/${PROJECT_NAME}
+)
+
+add_executable(moveit2_examples_oop src/moveit2_examples_oop.cpp)
+ament_target_dependencies(moveit2_examples_oop rclcpp geometry_msgs moveit_ros_planning_interface)
+install(TARGETS
+moveit2_examples_oop
+DESTINATION lib/${PROJECT_NAME}
+)
+
+add_executable(robot_model_and_robot_state_tutorial src/robot_model_and_robot_state_tutorial.cpp)
+ament_target_dependencies(robot_model_and_robot_state_tutorial rclcpp geometry_msgs moveit_ros_planning_interface moveit_core)
+install(TARGETS
+robot_model_and_robot_state_tutorial
 DESTINATION lib/${PROJECT_NAME}
 )
 
