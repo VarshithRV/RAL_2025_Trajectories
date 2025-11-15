@@ -36,6 +36,13 @@ robot_model_and_robot_state_tutorial
 DESTINATION lib/${PROJECT_NAME}
 )
 
+add_executable(kinematics_and_inverse_kinematics src/kinematics_and_inverse_kinematics.cpp)
+ament_target_dependencies(kinematics_and_inverse_kinematics rclcpp geometry_msgs moveit_ros_planning_interface moveit_core)
+install(TARGETS
+kinematics_and_inverse_kinematics
+DESTINATION lib/${PROJECT_NAME}
+)
+
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   # the following line skips the linter which checks for copyrights

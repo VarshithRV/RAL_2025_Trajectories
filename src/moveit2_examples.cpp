@@ -35,6 +35,7 @@ class MoveitExamples{
             print_state_server_ = node_->create_service<example_interfaces::srv::Trigger>("print_robot_state",std::bind(&MoveitExamples::print_state,this,std::placeholders::_1,std::placeholders::_2));
         }
 
+        // pose setpoint movement
         void move_to_pose(const geometry_msgs::msg::Pose &pose){
             move_group_interface_->setPoseTarget(pose);
             auto const [success, plan] = [this]{
@@ -49,6 +50,7 @@ class MoveitExamples{
             move_group_interface_->clearPoseTargets();
         }
 
+        // joint state setpoint movement
         void move_to_joint_state(const std::vector<double> group_variable_values){
             move_group_interface_->setJointValueTarget(group_variable_values);
             auto const [success, plan] = [this]{
@@ -103,30 +105,8 @@ int main(int argc, char* argv[]){
 
     rclcpp::init(argc,argv);
     auto node = std::make_shared<rclcpp::Node>("moveit_example");
+    auto moveit_example = std::make_shared<MoveitExamples>(node);
     RCLCPP_INFO(node->get_logger(),"Started the tutorials node");
-    
-    // auto const target_pose = []{
-        //     geometry_msgs::msg::Pose pose;
-        //     pose.orientation.x=0;
-        //     pose.orientation.y=1;
-        //     pose.orientation.z=0;
-        //     pose.orientation.w=0;
-        //     pose.position.x=-0.370;
-        //     pose.position.y=-0.200;
-        //     pose.position.z=0.409;
-        //     return pose;
-        // }();
-        
-        auto moveit_example = std::make_shared<MoveitExamples>(node);
-        rclcpp::executors::MultiThreadedExecutor executor;
-        executor.add_node(node);
-        std::thread spinner([&executor]() { executor.spin();});
-        
-        // rclcpp::executors::SingleThreadedExecutor executor;
-        // executor.add_node(node);
-        // std::thread executor_thread([&executor](){
-        //     executor.spin();
-        // });
-
+    rclcpp::spin(node);
     rclcpp::shutdown();
 }
