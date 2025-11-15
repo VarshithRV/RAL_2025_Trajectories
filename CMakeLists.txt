@@ -12,6 +12,7 @@ find_package(ur_moveit_config REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
 find_package(moveit_core REQUIRED)
+find_package(example_interfaces REQUIRED)
 
 # uncomment the following section in order to fill in
 # further dependencies manually.
@@ -22,16 +23,9 @@ install(DIRECTORY launch
 )
 
 add_executable(moveit2_examples src/moveit2_examples.cpp)
-ament_target_dependencies(moveit2_examples rclcpp geometry_msgs moveit_ros_planning_interface)
+ament_target_dependencies(moveit2_examples rclcpp geometry_msgs moveit_ros_planning_interface example_interfaces)
 install(TARGETS
 moveit2_examples
-DESTINATION lib/${PROJECT_NAME}
-)
-
-add_executable(moveit2_examples_oop src/moveit2_examples_oop.cpp)
-ament_target_dependencies(moveit2_examples_oop rclcpp geometry_msgs moveit_ros_planning_interface)
-install(TARGETS
-moveit2_examples_oop
 DESTINATION lib/${PROJECT_NAME}
 )
 

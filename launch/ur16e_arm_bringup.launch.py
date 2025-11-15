@@ -32,7 +32,8 @@ def generate_launch_description():
         ),
         launch_arguments={
             'ur_type': 'ur16e',
-            'launch_rviz': 'true'
+            'launch_rviz': 'true',
+            'use_sim_time':'false'
         }.items()
     )
 
